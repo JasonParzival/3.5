@@ -1,4 +1,7 @@
 let poleznostChart = null;
+let DovolnostChart = null;
+let UdovletvoronostChart = null;
+
 
 async function process() {
     let r = await fetch("/data.json");
@@ -101,15 +104,14 @@ async function updating() {
     let poleznostStatsNode = document.querySelector("#poleznostStats .stats")
     poleznostStatsNode.innerText = JSON.stringify(poleznostCounters);
 
-    console.log(poleznostCounters)
-    let labels = Object.keys(poleznostCounters)
-    let values = Object.values(poleznostCounters)
-    poleznostChart.data.labels = labels // передали ось X
+    let labels1 = Object.keys(poleznostCounters)
+    let values1 = Object.values(poleznostCounters)
+    poleznostChart.data.labels = labels1 // передали ось X
     poleznostChart.data.datasets = [{
         label: 'количество голосов',
-        data: values, // передали ось Y
+        data: values1, // передали ось Y
     }]
-    poleznostChart.update() // перерисовали график
+    poleznostChart.update(); // перерисовали график
 
     //-------------------------------------------------------
 
@@ -122,6 +124,15 @@ async function updating() {
     let DovolnostStatsNode = document.querySelector("#DovolnostStats .stats")
     DovolnostStatsNode.innerText = JSON.stringify(DovolnostCounters);
 
+    let labels2 = Object.keys(DovolnostCounters)
+    let values2 = Object.values(DovolnostCounters)
+    DovolnostChart.data.labels = labels2 // передали ось X
+    DovolnostChart.data.datasets = [{
+        label: 'количество голосов',
+        data: values2, // передали ось Y
+    }]
+    DovolnostChart.update(); // перерисовали график
+ 
     //---------------------------------------------------------
 
     let Udovletvoronost = filteredData.map(item => item['Отметь, в какой мере ты удовлетворен курсом?']);
@@ -132,6 +143,15 @@ async function updating() {
     })
     let UdovletvoronostStatsNode = document.querySelector("#UdovletvoronostStats .stats")
     UdovletvoronostStatsNode.innerText = JSON.stringify(UdovletvoronostCounters);
+
+    let labels3 = Object.keys(UdovletvoronostCounters)
+    let values3 = Object.values(UdovletvoronostCounters)
+    UdovletvoronostChart.data.labels = labels3 // передали ось X
+    UdovletvoronostChart.data.datasets = [{
+        label: 'количество голосов',
+        data: values3, // передали ось Y
+    }]
+    UdovletvoronostChart.update(); // перерисовали график
 
     filteredData.forEach(item => {
         container.insertAdjacentHTML("beforeend", `
@@ -147,14 +167,30 @@ async function updating() {
 
 async function createChart() {
     // взяли контейнер для графика
-    const chartContainer = document.querySelector("#chart");
-    
+    const chartContainer1 = document.querySelector("#chartFirst");
+    const chartContainer2 = document.querySelector('#chartSecond');
+    const chartContainer3 = document.querySelector('#chartThird');
+
     // создали график 
-    poleznostChart = new Chart(chartContainer, {
+    poleznostChart = new Chart(chartContainer1, {
       type: 'bar', // bar -- значит гистограмма
       options: {
         maintainAspectRatio: false
       }
+    });
+
+    DovolnostChart = new Chart(chartContainer2, {
+        type: 'bar', // bar -- значит гистограмма
+        options: {
+          maintainAspectRatio: false
+        }
+    });
+
+    UdovletvoronostChart = new Chart(chartContainer3, {
+        type: 'bar', // bar -- значит гистограмма
+        options: {
+            maintainAspectRatio: false
+        }
     });
 }
 
