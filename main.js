@@ -1,3 +1,5 @@
+let poleznostChart = null;
+
 async function process() {
     let r = await fetch("/data.json");
     let data = await r.json();
@@ -99,6 +101,16 @@ async function updating() {
     let poleznostStatsNode = document.querySelector("#poleznostStats .stats")
     poleznostStatsNode.innerText = JSON.stringify(poleznostCounters);
 
+    console.log(poleznostCounters)
+    let labels = Object.keys(poleznostCounters)
+    let values = Object.values(poleznostCounters)
+    poleznostChart.data.labels = labels // передали ось X
+    poleznostChart.data.datasets = [{
+        label: 'количество голосов',
+        data: values, // передали ось Y
+    }]
+    poleznostChart.update() // перерисовали график
+
     //-------------------------------------------------------
 
     let Dovolnost = filteredData.map(item => item['Насколько доволен форматом обучения?']);
@@ -133,9 +145,20 @@ async function updating() {
     });
 }
 
-process()
-processFilter()
-updating()
-fillListPoleznost()
-fillListDovolnost()
-fillListUdovletvoronost()
+async function createChart() {
+    // взяли контейнер для графика
+    const chartContainer = document.querySelector("#chart");
+    
+    // создали график 
+    poleznostChart = new Chart(chartContainer, {
+      type: 'bar', // bar -- значит гистограмма
+      options: {
+        maintainAspectRatio: false
+      }
+    });
+}
+
+process();
+processFilter();
+updating();
+createChart();
