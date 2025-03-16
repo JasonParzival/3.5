@@ -72,12 +72,6 @@ async function processFilter() {
     console.log(filteredData);
 }
 
-async function onSelectChanged(coolSelect) {
-    let selectPoleznost = document.querySelector(coolSelect)
-    console.log(selectPoleznost.value)
-    updating()
-}
-
 async function updating() {
     let r = await fetch("/data.json");
     let data = await r.json();
@@ -130,6 +124,7 @@ async function updating() {
     DovolnostChart.data.datasets = [{
         label: 'количество голосов',
         data: values2, // передали ось Y
+        backgroundColor:'#FF69B4',
     }]
     DovolnostChart.update(); // перерисовали график
  
@@ -150,6 +145,7 @@ async function updating() {
     UdovletvoronostChart.data.datasets = [{
         label: 'количество голосов',
         data: values3, // передали ось Y
+        backgroundColor:'#FFD700',
     }]
     UdovletvoronostChart.update(); // перерисовали график
 
